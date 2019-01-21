@@ -30,14 +30,14 @@ let schema = buildSchema(`
 // If Message had any complex fields, we'd put them on this object.
 class Message {
 	constructor(id, {content, author}) {
-		this.id = id;
+		this.id      = id;
 		this.content = content;
-		this.author = author;
+		this.author  = author;
 	}
 }
 
 // Maps username to content
-var fakeDatabase = {};
+let fakeDatabase = {};
 
 // The root provides a resolver function for each API endpoint
 let root = {
