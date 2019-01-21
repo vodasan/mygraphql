@@ -1,0 +1,39 @@
+
+// =========================
+// ==  Creer un message
+// =========================
+mutation {
+	createMessage(input: {
+		author: "andy",
+		content: "hope is a good thing",
+	}) {
+		id
+	}
+}
+
+// =========================
+// ==  Modifier un message
+// =========================
+mutation {
+	updateMessage(id: "e11c5546ec3789a5e240", input: {
+		author: "Alfred"
+	}) {
+		id
+	}
+}
+
+// =========================
+// ==  Supprimer un message
+// =========================
+mutation {
+	deleteMessage(id: "e11c5546ec3789a5e240")
+}
+
+// =========================
+// == Recuperer un message
+// =========================
+{
+	getMessage(id: "e11c5546ec3789a5e240") {
+		author, content
+	}
+}
