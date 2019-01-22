@@ -6,6 +6,7 @@ mutation {
 	createMessage(input: {
 		author: "andy",
 		content: "hope is a good thing",
+		type: SENT_BY_CUSTOMER
 	}) {
 		id
 	}

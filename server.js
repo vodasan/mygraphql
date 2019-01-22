@@ -13,6 +13,9 @@ let schema = buildSchema(`
 		
 		"The author of the message."
 		author: String
+		
+		"The type of the message."
+		type: messageTypesEnum
 	}
 	
 	"""
@@ -27,6 +30,9 @@ let schema = buildSchema(`
 		
 		"The author of the message."
 		author: String
+		
+		"The type of the message."
+		type: messageTypesEnum
 		
 		"The body of the message."		
 		body: String @deprecated(reason: "Field is deprecated!")
@@ -49,16 +55,24 @@ let schema = buildSchema(`
 		"Delete a message."
 		deleteMessage(id: ID!): Boolean
 	}
+	
+	enum messageTypesEnum {
+		SENT_BY_CUSTOMER
+		SENT_BY_ORANGE
+	}
 `);
 
 // If Message had any complex fields, we'd put them on this object.
 class Message {
-	constructor(id, {content, author}) {
+	constructor(id, {content, author, type}) {
 		this.id      = id;
 		this.content = content;
 		this.author  = author;
+		this.type    = type;
 	}
 }
+
+
 
 // Maps username to content
 let fakeDatabase = {};

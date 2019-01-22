@@ -1,0 +1,18 @@
+
+Type de données :
+- String
+- Int
+- Float
+- Boolean
+- ID
+
+Pour définir une liste d'entier
+[Int]
+
+String Not null
+String!
+
+
+Il n'existe pas de type temporel (date, datetime, ...)
+Mais il est possible de les creer en utilisant les "Custom scalars"
+Voir https://graphql.org/graphql-js/type/#graphqlscalartype
