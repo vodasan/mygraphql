@@ -37,9 +37,17 @@ let schema = buildSchema(`
 		"The body of the message."		
 		body: String @deprecated(reason: "Field is deprecated!")
 	}
+	
+	type AllMessages {
+		totalCount: Int
+		messages: [Message]
+	}
   
 	type Query {
 		hello: String
+		
+		"Get all messages."
+		getAllMessages(first: Int, offset: Int): AllMessages
 		
 		"Retrieve the details of the message."
 		getMessage(id: ID!): Message
@@ -72,8 +80,6 @@ class Message {
 	}
 }
 
-
-
 // Maps username to content
 let fakeDatabase = {};
 
@@ -81,6 +87,24 @@ let fakeDatabase = {};
 const root = {
 	hello: () => {
 		return 'Hello world!';
+	},
+	
+	getAllMessages: ({first, offset}) => {
+		let aMessages = [];
+
+		for ( id in fakeDatabase ) {
+			let oMessage = new Message(id, fakeDatabase[id]);
+			aMessages.push(oMessage);
+		}
+		
+		if ( first !== undefined && offset !== undefined ) {
+			aMessages = aMessages.slice(first, offset);
+		}
+
+		return {
+			totalCount: aMessages.length,
+			messages: 	aMessages
+		};
 	},
 	
 	getMessage: ({id}) => {
@@ -95,10 +119,14 @@ const root = {
 		// Create a random id for our "database".
 		let id = require('crypto').randomBytes(10).toString('hex');
 
-		fakeDatabase[id] = input;
+		if ( input.type === undefined ) {
+			input.type = "SENT_BY_ORANGE";
+		}
+		
+		fakeDatabase[id] = input;			
 		
 		return new Message(id, input);
-	},
+	},	
 	
 	updateMessage: ({id, input}) => {
 		if ( !fakeDatabase[id] ) {

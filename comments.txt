@@ -17,3 +17,6 @@ Il n'existe pas de type temporel (date, datetime, ...)
 Mais il est possible de les creer en utilisant les "Custom scalars"
 Voir https://graphql.org/graphql-js/type/#graphqlscalartype
 Ou un librairie (ex: graphql-iso-date, graphql-type-datetime)
+
+
+Un fragment est un morceau réutilisable de "query"
