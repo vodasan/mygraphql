@@ -27,6 +27,9 @@ let schema = buildSchema(`
 		
 		"The author of the message."
 		author: String
+		
+		"The body of the message."		
+		body: String @deprecated(reason: "Field is deprecated!")
 	}
   
 	type Query {
