@@ -4,25 +4,46 @@ const express         = require('express')
 
 // Construct a schema, using GraphQL schema language
 let schema = buildSchema(`
+	"""
+	A type that describes the message without ID.
+	"""
 	input MessageInput {
+		"The content of the message."
 		content: String
+		
+		"The author of the message."
 		author: String
 	}
 	
+	"""
+	A type that describes the message.
+	"""
 	type Message {
+		"The unique identifier of the message."
 		id: ID!
+		
+		"The content of the message."
 		content: String
+		
+		"The author of the message."
 		author: String
 	}
   
 	type Query {
-		hello: String,
+		hello: String
+		
+		"Retrieve the details of the message."
 		getMessage(id: ID!): Message
 	}
-	
+
 	type Mutation {
+		"Create a new message."
 		createMessage(input: MessageInput): Message
+		
+		"Update an existing message."
 		updateMessage(id: ID!, input: MessageInput): Message
+		
+		"Delete a message."
 		deleteMessage(id: ID!): Boolean
 	}
 `);
@@ -40,14 +61,14 @@ class Message {
 let fakeDatabase = {};
 
 // The root provides a resolver function for each API endpoint
-let root = {
+const root = {
 	hello: () => {
 		return 'Hello world!';
 	},
 	
 	getMessage: ({id}) => {
 		if ( !fakeDatabase[id] ) {
-			throw new Error('no message exists with id ' + id);
+			throw new Error(`No message exists with id '${id}'.`);
 		}
 		
 		return new Message(id, fakeDatabase[id]);
@@ -64,7 +85,7 @@ let root = {
 	
 	updateMessage: ({id, input}) => {
 		if ( !fakeDatabase[id] ) {
-			throw new Error('no message exists with id ' + id);
+			throw new Error(`No message exists with id '${id}'.`);
 		}
 
 		oMessage = fakeDatabase[id];
@@ -85,7 +106,7 @@ let root = {
 	
 	deleteMessage: ({id}) => {
 		if ( !fakeDatabase[id] ) {
-			throw new Error('no message exists with id ' + id);
+			throw new Error(`No message exists with id '${id}'.`);
 		}
 		
 		delete fakeDatabase[id];

@@ -37,3 +37,4 @@ mutation {
 		author, content
 	}
 }
+
