@@ -20,3 +20,11 @@ Ou un librairie (ex: graphql-iso-date, graphql-type-datetime)
 
 
 Un fragment est un morceau réutilisable de "query"
+
+// Apollo : https://www.apollographql.com/
+
+Apollo permet d'utiliser :
+- Agular, react, Vue, ...
+- swift (IOS), Java (Android)
+
+Apollo gere le cache
