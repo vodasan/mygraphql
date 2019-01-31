@@ -2,6 +2,35 @@ const express         = require('express')
 	, graphqlHTTP     = require('express-graphql')
 	, { buildSchema } = require('graphql');
 
+		
+// Begin: Data for e-commerce
+let categories = [
+	{id: 61521, name: "livres"},
+	{id: 53782, name: "musiques"},
+	{id: 60427, name: "jouets"},
+	{id: 78053, name: "films"}
+];
+
+let users = [
+	{id: 42860, firstName: "David", lastName:"Philibert", displayName: "David P.", deliveryAddress: "43 route des tilleuls 06560 Valbonne", civility: "M."},
+	{id: 06485, firstName: "Floriane", lastName:"Eustache", displayName: "Floriane E.", deliveryAddress: "52 rue de cannes 75013 Paris", civility: "Mme"},
+	{id: 58670, firstName: "Lucie", lastName:"Zakady", displayName: "Lucie", deliveryAddress: "127 place berska 75015 Paris", civility: "Mme"}
+];
+
+let articles = [
+	{
+		id: 82956, name: "PS4 500 Go Slim", brand: "Sony", price: 293, picture: "https://images-na.ssl-images-amazon.com/images/I/61XPLuBxQ8L._SX679_.jpg", reviews: [91049,37096],
+		description: "La PS4 surpuissante : plus rapide et plus puissante pour des jeux en résolution 4K.\nGagnant du prix iF Product Design Award d'or."
+	}
+];
+
+let reviews = [
+	{id: 91049, author:"Stephane P.", rating:5, createdAt: "2019-01-26", title:"Tres bien", comment:"Je suis content de mon achat. Bon produit. "},	
+	{id: 37096, author:"Nicolas C.", rating:4, createdAt: "2019-01-12", title:"Top!", comment:"Parfait, brancher, jouer et c’est partie"}
+];
+// End: Data for e-commerce
+	
+	
 // Construct a schema, using GraphQL schema language
 let schema = buildSchema(`
 	"""
@@ -38,6 +67,34 @@ let schema = buildSchema(`
 		body: String @deprecated(reason: "Field is deprecated!")
 	}
 	
+	type User {
+		id: ID!
+		civility: String
+		firstName: String
+		lastName: String
+		displayName: String		
+		deliveryAddress: String
+	}
+	
+	type Article {
+		id: ID!
+		name: String
+		brand: String
+		price: Int
+		picture: String
+		description: String
+		reviews: [Int]
+	}
+	
+	type Review {
+		id: ID!
+		author: String
+		rating: Float
+		title: String
+		comment: String
+		createdAt: String
+	}
+	
 	type AllMessages {
 		totalCount: Int
 		messages: [Message]
@@ -51,6 +108,10 @@ let schema = buildSchema(`
 		
 		"Retrieve the details of the message."
 		getMessage(id: ID!): Message
+		
+		User(id: ID!): User
+		
+		Article(id: ID!): Article
 	}
 
 	type Mutation {
@@ -87,6 +148,38 @@ let fakeDatabase = {};
 const root = {
 	hello: () => {
 		return 'Hello world!';
+	},
+	
+	User: ({id}) => {
+		let output = {};
+		
+		for ( let user of users ) {
+			if ( user.id == id ) {
+				output = user;
+			}
+		}
+		
+		if ( !output["id"] ) {
+			throw new Error(`No user exists with id '${id}'.`);
+		}
+		
+		return output;
+	},
+	
+	Article: ({id}) => {
+		let output = {};
+		
+		for ( let article of articles ) {
+			if ( article.id == id ) {
+				output = article;
+			}
+		}
+		
+		if ( !output["id"] ) {
+			throw new Error(`No article exists with id '${id}'.`);
+		}
+		
+		return output;
 	},
 	
 	getAllMessages: ({first, offset}) => {
