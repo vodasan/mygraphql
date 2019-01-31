@@ -75,3 +75,20 @@ fragment message1 on Message {
 		...message1
 	}
 }
+
+// ===============================================================
+// == Appel Multiples
+// ===============================================================
+{
+	User(id: 42860) {
+		displayName
+		deliveryAddress
+	}
+	Article(id: 82956) {
+		name
+		brand
+		price
+		picture
+		reviews
+	}
+}
